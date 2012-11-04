@@ -1,4 +1,5 @@
 module SmartfrenCore
+  URL_EP = 'http://data.smartfren.com/index.php/'
   module Base
     
     class Smartfren < Bridge
@@ -6,7 +7,7 @@ module SmartfrenCore
       def reload voucher_code
         login
         data_before = featchInfo
-        page = @agent.post("http://data.smartfren.com/index.php/buy_package_connex/index",{:voucher_code => voucher_code, :reload => "Reload"},{"Referer" =>  "http://data.smartfren.com/index.php/user_info","Content-Type" => "application/x-www-form-urlencoded"})
+        page = @agent.post(SmartfrenCore::URL_EP+"buy_package_connex/index",{:voucher_code => voucher_code, :reload => "Reload"},{"Referer" =>  SmartfrenCore::URL_EP+"user_info","Content-Type" => "application/x-www-form-urlencoded"})
         data_after = featchInfo
         if data_after[:balance] > data_before[:balance]
           puts "Balance Before Reload #{data_before[:balance]} and now your balance is #{data_after[:balance]}"
@@ -49,10 +50,10 @@ module SmartfrenCore
       
      
       
-      private
+      #private
       
       def featchInfo
-        page = @agent.get("http://data.smartfren.com/index.php/user_info")
+        page = @agent.get(SmartfrenCore::URL_EP+"user_info")
         infoRes = Nokogiri::HTML(page.body)
         infoTable = infoRes.css("div#header div#content-details div#content-details-inside-left span.fonthitam table")
         phoneNumber = infoTable[0].css('tr:nth-child(1) td:nth-child(2)').text.gsub("\t",'')[1..-1]
@@ -70,20 +71,20 @@ module SmartfrenCore
       
       def login
         @login.merge! :login => "Login"
-        page = @agent.post("http://data.smartfren.com/index.php/main/index",@login, {"Content-Type" => "application/x-www-form-urlencoded"})
+        page = @agent.post(SmartfrenCore::URL_EP+"main/index",@login, {"Content-Type" => "application/x-www-form-urlencoded"})
         page.links.each do |li|
-          return true if li.href == "http://data.smartfren.com/index.php/main/logout"
+          return true if li.href == SmartfrenCore::URL_EP+"main/logout"
         end
         return false
       end
         
       def logout
-        @agent.get "http://data.smartfren.com/index.php/main/logout"
+        @agent.get SmartfrenCore::URL_EP+"main/logout"
         true
       end
       
       def paketUrl num
-        "http://data.smartfren.com/index.php/buy_package_connex/buy/#{num.to_s}"
+        SmartfrenCore::URL_EP+"buy_package_connex/buy/#{num.to_s}"
       end
       
     end
