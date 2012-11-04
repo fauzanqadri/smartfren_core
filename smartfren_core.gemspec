@@ -14,4 +14,8 @@ Gem::Specification.new do |gem|
   gem.name          = "smartfren_core"
   gem.require_paths = ["lib"]
   gem.version       = SmartfrenCore::VERSION
+  
+  gem.add_dependency "mechanize"
+ 
+  gem.add_development_dependency "sqlite3"
 end
