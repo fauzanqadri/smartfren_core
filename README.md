@@ -1,4 +1,4 @@
-# SmartfrenCore
+# Smartfren
 
 TODO: Write a gem description
 
@@ -6,7 +6,7 @@ TODO: Write a gem description
 
 Add this line to your application's Gemfile:
 
-    gem 'smartfren_core'
+    gem 'smartfren'
 
 And then execute:
 
@@ -14,7 +14,7 @@ And then execute:
 
 Or install it yourself as:
 
-    $ gem install smartfren_core
+    $ gem install smartfren
 
 ## Usage
 

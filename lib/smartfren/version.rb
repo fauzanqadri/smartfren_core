@@ -1,3 +1,3 @@
-module SmartfrenCore
+module Smartfren
   VERSION = "0.0.1"
 end
