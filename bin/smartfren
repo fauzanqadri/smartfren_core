@@ -1,0 +1,31 @@
+#!/usr/bin/env ruby
+lib = File.expand_path(File.dirname(__FILE__) + '/../lib')
+$LOAD_PATH.unshift(lib) if File.directory?(lib) && !$LOAD_PATH.include?(lib)
+require 'smartfren'
+case ARGV[0]
+when "info"
+	param = ARGV[1].to_s.split(":")
+	puts "Please Wait"
+	a = Smartfren::Client.new(param[0],param[1]).info
+	puts a
+	
+when "reload"
+	param = ARGV[1].to_s.split(":")
+	puts "Please Wait"
+	a = Smartfren::Client.new(param[0],param[1]).reload(ARGV[2].to_s)
+	puts a
+when "buy"
+	param = ARGV[1].to_s.split(":")
+	puts "Please Wait"
+	a = Smartfren::Client.new(param[0],param[1]).buy(ARGV[2].to_s)
+	puts a
+else
+	STDOUT.puts <<-EOF
+Please provide command name
+
+Usage:
+  smartfren info phonenumber:password
+  smartfren reload phonenumber:password voucher_code
+  smartfren buy phonenumber:password packet(daily/weekly/monthly/reguler)
+EOF
+end
