@@ -17,8 +17,7 @@ when "reload"
 when "buy"
 	param = ARGV[1].to_s.split(":")
 	puts "Please Wait"
-	a = Smartfren::Client.new(param[0],param[1]).buy(ARGV[2].to_s)
-	puts a
+	Smartfren::Client.new(param[0],param[1]).buy(ARGV[2].to_s)
 else
 	STDOUT.puts <<-EOF
 Please provide command name
