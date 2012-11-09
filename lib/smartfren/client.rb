@@ -13,16 +13,13 @@ module Smartfren
       login
       data_before = featchInfo
       page = @agent.post(Smartfren::URL_EP+"buy_package_connex/index",{:voucher_code => voucher_code, :reload => "Reload"},{"Referer" =>  Smartfren::URL_EP+"user_info","Content-Type" => "application/x-www-form-urlencoded"})
-      data_after = featchInfo
-      if data_after[:balance] > data_before[:balance]
-        puts "Balance Before Reload #{data_before[:balance]} and now your balance is #{data_after[:balance]}"
-        logout
-        true
+      res = if featchInfo[:balance] > data_before[:balance]
+        "Balance Before Reload #{data_before[:balance]} and now your balance is #{featchInfo[:balance]}"
       else
-        puts "Hey Something Wrong With your voucher code, yeah.. i'm sure that"
-        logout
-        false
+        "Hey Something Wrong With your voucher code, yeah.. i'm sure that"
       end
+      logout
+      res
     end
       
     def buy paket
@@ -34,16 +31,13 @@ module Smartfren
       data_before = featchInfo
       page = @agent.get(paketUrl(num))
       data_after = featchInfo
-      if data_before[:packageExpiry] != data_after[:packageExpiry]
-        logout
-        puts "Ok, Your Package Expiry is #{data_after[:packageExpiry]}"
-        return true
+      res = if featchInfo[:packageExpiry] != data_after[:packageExpiry]
+        "Ok, Your Package Expiry is #{featchInfo[:packageExpiry]}"
       else
-        logout
-        puts "emmm.... lets check... #{data_after[:packageExpiry]}... Something error with me"
-        return false
+        "emmm.... lets check... #{featchInfo[:packageExpiry]}... Something error with me"
       end
-        
+      logout
+      res        
     end
       
     def info
@@ -73,14 +67,14 @@ module Smartfren
       }
       data
     end
-      
+    
     def login
       @login.merge! :login => "Login"
       page = @agent.post(Smartfren::URL_EP+"main/index",@login, {"Content-Type" => "application/x-www-form-urlencoded"})
       page.links.each do |li|
-        return true if li.href == Smartfren::URL_EP+"main/logout"
+        true if li.href == Smartfren::URL_EP+"main/logout"
       end
-      return false
+      false
     end
         
     def logout
